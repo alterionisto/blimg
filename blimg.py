@@ -1,19 +1,21 @@
 import os
 import re
-import random
-import urllib.request, urllib.parse
+import urllib.request
+import urllib.parse
 from argparse import ArgumentParser
 import pprint
+
 
 def size_filter(_dir, _size):
 	for (path, dirs, files) in os.walk(_dir):
 		for f in files:
 			fullpath = os.path.join(path, f)
-			if os.path.getsize(fullpath)/1024 < _size:
+			if os.path.getsize(fullpath) / 1024 < _size:
 				os.remove(fullpath)
 				print("removed", fullpath)
 
-def download(_url):	
+
+def download(_url):
 	url = _url[:]
 	global uid
 	blogname = re_blogname.search(url)
@@ -54,7 +56,7 @@ def download(_url):
 			code = os.system("wget -P {} -A jpeg,bmp,gif,png,jpg {}".format(outdir, url))
 			if code:
 				print("wget return code:", code)
-		else:			
+		else:
 			print("images found:", len(images))
 			for href in images:
 				end = re_filename.search(href)
@@ -95,7 +97,7 @@ uid = 1
 parser = ArgumentParser(description="Blogspot image downloader")
 parser.add_argument("-u", "--url", default=None, dest="url",
 	help="starting blog post address")
-parser.add_argument("-i", "--direction", 
+parser.add_argument("-i", "--direction",
 	choices=["newer", "older"], default="older", dest="direction",
 	help="direction of download")
 parser.add_argument("-d", "--destination", default=r"C:\test", dest="destination",
